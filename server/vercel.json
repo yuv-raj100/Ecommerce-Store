@@ -1,8 +1,9 @@
 {
     "version":2,
+    "name":"native-server",
     "builds": [
         {
-            "src": "./index.js",
+            "src": "server.js",
             "use": "@vercel/node"
         }
     ],

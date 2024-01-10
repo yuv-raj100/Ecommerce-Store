@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { clearItem } from './reducers/CartSlice'
+import { server_url } from './utils/constants';
+
 
 const CheckoutPage = () => {
 
@@ -20,7 +22,7 @@ const CheckoutPage = () => {
         return s;
     })
 
-    const url = "http://localhost:3000/api/checkout"
+    //const url = "http://localhost:3000/api/checkout"
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ const CheckoutPage = () => {
 
     const fetchData = async (data)=>{
 
-        const result = await fetch(url, {
+        const result = await fetch(server_url+"checkout", {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -192,7 +194,12 @@ const CheckoutPage = () => {
                 <h1 className='font-bold text-2xl m-4'>Order Successfull!!</h1>
                 <h1 className='font-bold text-2xl m-4'>Your OrderId: {orderId}</h1>
                 
-                <Link to="/"><h1>Go Back To HomePage</h1></Link>
+                <Link to="/"><h1>You will be redirected to HomePage...</h1></Link>
+                {
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 3000)
+                }
                 
                 </div>}
         </div>

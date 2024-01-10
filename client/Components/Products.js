@@ -1,10 +1,10 @@
 import React, { useEffect, useState, CSSProperties } from 'react'
 import ItemCard from './ItemCard';
 import { useParams } from 'react-router-dom'
-import URL from './utils/constants';
+import {server_url} from './utils/constants';
 import { Link } from 'react-router-dom';
 import { Search ,X} from 'lucide-react';
-import { BeatLoader,MoonLoader } from 'react-spinners';
+import { MoonLoader } from 'react-spinners';
 
 
 
@@ -23,7 +23,7 @@ const Products = () => {
     },[])
 
     const fetchData = async ()=>{
-        const res = await fetch(URL+obj.category);
+        const res = await fetch(server_url+"products/"+obj.category);
         const data = await res.json();
         setProductList(data);
         setFilterList(data);

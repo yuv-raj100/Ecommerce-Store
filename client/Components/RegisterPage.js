@@ -1,5 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { server_url } from './utils/constants';
+
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -9,10 +11,10 @@ const RegisterPage = () => {
 
   
 
-  const url="http://localhost:3000/api/register"
+  // const url="http://localhost:3000/api/register"
 
   const fetchData = async (data)=>{
-      const res = await fetch(url, {
+      const res = await fetch(server_url+"register", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

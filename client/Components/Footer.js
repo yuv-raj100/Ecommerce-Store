@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Instagram,Facebook,Copyright, Cigarette } from 'lucide-react';
+import { Instagram,Facebook,Copyright } from 'lucide-react';
 
 
 const Footer = () => {

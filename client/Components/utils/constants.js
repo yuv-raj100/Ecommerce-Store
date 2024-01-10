@@ -1,3 +1,3 @@
-const URL = "http://localhost:3000/api/products/"
+export const URL = "http://localhost:3000/api/products/"
+export const server_url="https://ecommerce-store-server-omega.vercel.app/api/"
 
-export default URL;

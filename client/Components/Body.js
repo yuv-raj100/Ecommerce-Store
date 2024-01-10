@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import CategoryWear from './CategoryWear'
 import Banner from './Banner'
 import { MoonLoader } from 'react-spinners';
-import { useSelector } from 'react-redux'
+import { server_url } from './utils/constants';
 
 
 const Body = () => {
@@ -16,15 +16,15 @@ const Body = () => {
         fetchData();
     },[])
 
-    const url = "http://localhost:3000/api/home"
+    // const url = "http://localhost:3000/api/home"
     const userInfo = JSON.parse(localStorage.getItem('user'))
 
     const fetchData = async ()=>{
-        const res = await fetch(url);
+        const res = await fetch(server_url+"home");
         const data = await res.json();
 
         if(userInfo){
-            const result = await fetch(url, {
+            const result = await fetch(server_url+"home", {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json'

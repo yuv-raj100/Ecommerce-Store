@@ -4,8 +4,9 @@ import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addItem } from './reducers/CartSlice'
 import ImageSlider from './ImageSlider';
-import SlidingDiv from './SlidingDiv';
 import { Minus,Plus } from 'lucide-react';
+import { server_url } from './utils/constants';
+
 
 const ProductPage = () => {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const ProductPage = () => {
         fetchData();
     },[]);
 
-    const URL = "http://localhost:3000/api/products/"+obj.category+"/"+obj.name;
+    const URL = server_url+"products/"+obj.category+"/"+obj.name;
    
 
     const fetchData = async ()=>{

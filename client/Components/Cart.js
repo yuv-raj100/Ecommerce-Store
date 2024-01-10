@@ -2,6 +2,8 @@ import React ,{useEffect}from 'react'
 import { useSelector } from 'react-redux'
 import CartItem from './CartItem';
 import { Link } from 'react-router-dom';
+import { server_url } from './utils/constants';
+
 
 
 
@@ -17,10 +19,10 @@ const Cart = () => {
 
   const isLogin = localStorage.getItem("token")
 
-  const url = "http://localhost:3000/api/cart"
+  //const url = "http://localhost:3000/api/cart"
 
   const fetchData = async (data)=>{
-    const result = await fetch(url, {
+    const result = await fetch(server_url+"cart", {
 
         method: 'POST',
         headers: {
@@ -29,6 +31,7 @@ const Cart = () => {
         body: JSON.stringify(data)
       });
     const ans = await result.json();
+    console.log(ans);
 }
 
   useEffect(()=>{

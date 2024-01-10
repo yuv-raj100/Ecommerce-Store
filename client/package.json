@@ -1,7 +1,7 @@
 {
   "name": "ecommerce",
+  "proxy": "http://localhost:3000/api/",
   "version": "1.0.0",
-  "proxy": "http://localhost:3000/api",
   "description": "This is a ecom store.",
   "scripts": {
     "start": "parcel index.html",

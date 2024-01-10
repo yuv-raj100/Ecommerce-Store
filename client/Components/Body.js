@@ -22,21 +22,6 @@ const Body = () => {
     const fetchData = async ()=>{
         const res = await fetch(server_url+"home");
         const data = await res.json();
-
-        if(userInfo){
-            const result = await fetch(server_url+"home", {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email:userInfo.email})
-            });
-            const ans = await result.json();
-            if(ans.product_info.length>0){
-                const cartItemsJSON = JSON.stringify(ans.product_info)
-                localStorage.setItem('cart',cartItemsJSON)
-            }
-        }
         const homePageArray = data.homePage;
         setBanner(homePageArray[0].categories);
         setCarouselData(homePageArray[0].sliders);

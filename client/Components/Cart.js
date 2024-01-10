@@ -15,6 +15,8 @@ const Cart = () => {
 
   const userInfo = JSON.parse(localStorage.getItem('user'))
 
+  const isLogin = localStorage.getItem("token")
+
   const url = "http://localhost:3000/api/cart"
 
   const fetchData = async (data)=>{
@@ -67,7 +69,12 @@ const Cart = () => {
           </div>
           <h1 className='mx-4 p-4 text-xs'>Shipping taxes, and discount codes calculated at checkout.</h1>
           <div className='m-4 p-4 border bg-black'>
-                  <Link to="/checkout"><button className='text-white text-lg font-bold w-full'>PROCEED TO CHECOUT</button></Link>
+                {
+                    isLogin && <Link to="/checkout"><button className='text-white text-lg font-bold w-full'>PROCEED TO CHECOUT</button></Link>
+                } 
+                {
+                  !isLogin && <Link to="/login"><button className='text-white text-lg font-bold w-full'>PROCEED TO CHECOUT</button></Link>
+                } 
           </div> 
         </div>
     </div>

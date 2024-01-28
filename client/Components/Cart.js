@@ -3,11 +3,14 @@ import { useSelector } from 'react-redux'
 import CartItem from './CartItem';
 import { Link } from 'react-router-dom';
 import { server_url } from './utils/constants';
+import ScrollToTop from './ScrollToTop';
 
 
 
 
 const Cart = () => {
+
+  ScrollToTop();
 
   const cartItems = useSelector((store) => store.cart.items);
   console.log(cartItems);

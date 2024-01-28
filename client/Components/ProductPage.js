@@ -6,10 +6,13 @@ import { addItem } from './reducers/CartSlice'
 import ImageSlider from './ImageSlider';
 import { Minus,Plus } from 'lucide-react';
 import { server_url } from './utils/constants';
+import ScrollToTop from './ScrollToTop';
 
 
 const ProductPage = () => {
     const dispatch = useDispatch();
+
+    ScrollToTop();
 
     const handleAdd = (item)=>{
         if(size==0){
@@ -17,6 +20,7 @@ const ProductPage = () => {
         }
         else
             dispatch(addItem(item));
+        //setTemp((prev)=>(prev+1));
     }
 
     const [size,setSize] = useState(0);
@@ -27,6 +31,7 @@ const ProductPage = () => {
     const [flag,setFlag] = useState(false)
     const [images,setImages] = useState([]);
     const [error,setError] = useState(null);
+    const [temp,setTemp] = useState(0);
 
     useEffect(()=>{
         fetchData();

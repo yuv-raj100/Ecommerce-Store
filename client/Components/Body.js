@@ -3,10 +3,12 @@ import CategoryWear from './CategoryWear'
 import Banner from './Banner'
 import { MoonLoader } from 'react-spinners';
 import { server_url } from './utils/constants';
+import ScrollToTop from './ScrollToTop';
 
 
 const Body = () => {
 
+    ScrollToTop();
     const [carouselData,setCarouselData] = useState([]);
     const [banner,setBanner] = useState([]);
     const [loading,setLoading] = useState(true)

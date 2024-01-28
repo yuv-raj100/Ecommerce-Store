@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { useSelector } from 'react-redux'
 import nexGen from "../Images/nexGen.png"
 import {AlignLeft,ShoppingCart,User,PhoneCall,MailOpen,X} from "lucide-react"
+import CartItem from './CartItem'
 
 
 const Header = () => {
@@ -38,6 +39,9 @@ const Header = () => {
                 </ul>
             </div>
             
+        </div>
+        <div className='absolute bg-white top-3 right-12'>
+            <span className='font-semibold'>{cartItems.length}</span>
         </div>
         {showDiv && (
               <div className='absolute z-10 bg-white p-4 h-full w-full'>

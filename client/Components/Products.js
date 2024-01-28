@@ -5,10 +5,13 @@ import {server_url} from './utils/constants';
 import { Link } from 'react-router-dom';
 import { Search ,X} from 'lucide-react';
 import { MoonLoader } from 'react-spinners';
+import ScrollToTop from './ScrollToTop';
 
 
 
 const Products = () => {
+
+    ScrollToTop();
     const obj = useParams();
 
     const [productList,setProductList] = useState([]);

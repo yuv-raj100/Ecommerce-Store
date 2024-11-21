@@ -29,21 +29,6 @@ NEXGEN is a responsive e-commerce website built to deliver a seamless online sho
     
 🌐 **Live Demo: ** https://ecommerce-store-client-six.vercel.app/
 
-
-📖 Getting Started
-Follow these steps to set up the project locally:
-
-Prerequisites
-Node.js (v14 or higher)
-MongoDB installed locally or a cloud MongoDB instance
-Installation
-Clone the Repository:
-
-bash
-Copy code
-git clone https://github.com/yuv-raj100/Ecommerce-Store 
-cd Ecommerce-Store
-
 📷 **Screenshots**
 
 <p align="center">

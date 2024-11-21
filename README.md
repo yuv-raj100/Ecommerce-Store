@@ -41,7 +41,7 @@ Clone the Repository:
 
 bash
 Copy code
-git clone https://github.com/yuv-raj100/Ecommerce-Store
+git clone https://github.com/yuv-raj100/Ecommerce-Store 
 cd Ecommerce-Store
 
 📷 **Screenshots**

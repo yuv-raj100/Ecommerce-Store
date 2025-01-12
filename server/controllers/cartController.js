@@ -4,7 +4,6 @@ const cartModel = require("../models/cartData");
 const setCartInfo = async (req,res)=>{
     const productInfo = [];
     const email = req.body.email;
-    console.log(req.body);
     req.body.cartDetails.map((s)=>{
         const obj = {
             pageData:s.pageData,
@@ -16,7 +15,6 @@ const setCartInfo = async (req,res)=>{
     })
     const existingUser = await cartModel.findOne({email:email});
     if(existingUser){
-        console.log(existingUser);
         existingUser.product_info=productInfo;
         const flag = await existingUser.save();
     }
@@ -34,7 +32,7 @@ const getCartInfo = async (req,res)=>{
     // console.log(req.body);
     // console.log(email);
     const cartInfo = await cartModel.findOne({email : email});
-    console.log(cartInfo);
+    
     res.status(201).json(cartInfo);
 }
 

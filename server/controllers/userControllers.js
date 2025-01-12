@@ -4,8 +4,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config();
 
 const register = async (req,res)=>{
-    const {username,email,password}=req.body;
-    console.log(req.body);  
+    const {username,email,password}=req.body; 
     try {
         const existingUser = await userModel.findOne({ email : email })
         if(existingUser){
@@ -30,7 +29,6 @@ const register = async (req,res)=>{
 
 const login = async (req,res)=>{
     const {email,password}=req.body;
-    console.log(req.body)
     try {
         const existingUser = await userModel.findOne({ email : email })
         if(!existingUser){
@@ -55,9 +53,7 @@ const login = async (req,res)=>{
 
 const profile = async (req,res)=>{
     const {token}=req.body;
-    console.log(token);
     const decoded = jwt.decode(token);
-    console.log(decoded);
     const existingUser = await userModel.findOne({ email : decoded.email })
     res.status(201).json({email : existingUser.email ,username:existingUser.username})
 }

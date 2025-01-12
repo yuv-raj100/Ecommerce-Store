@@ -27,10 +27,8 @@ const sendProductInfo = async (req,res)=>{
 }
 
 const homePage = async (req,res)=>{
-
     const data = await homeModel.find();
     const arr=data[0];
-    console.log(arr.sliders);
     res.status(201).json({homePage:data});
 } 
 

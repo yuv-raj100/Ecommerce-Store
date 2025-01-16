@@ -52,7 +52,7 @@ const Products = () => {
 
     useEffect(()=>{
         if(hasMore)
-            fetchData();
+            fetchData("default");
     },[pageNumber])
 
        const handleScroll = () => {

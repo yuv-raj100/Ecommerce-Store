@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const addProduct = require("./controllers/cartController")
-
-
 const connectDB = require("./db/connect")
 require('dotenv').config();
 const mainRouter = require("./routes/route")

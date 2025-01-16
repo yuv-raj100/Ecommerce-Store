@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { clearItem } from './reducers/CartSlice';
 import { Link } from 'react-router-dom';
-import { server_url } from './utils/constants';
+
 
 
 import OrderHistory from './OrderHistory';
@@ -23,9 +23,7 @@ const UserProfile = () => {
 
 
 
-    // const url="http://localhost:3000/api/profile"
-    // const url2="http://localhost:3000/api/profile/orderhistory"
-
+    const server_url = process.env.REACT_APP_SERVER_URL;
 
     const handlClick = ()=>{
         localStorage.removeItem("token");
@@ -38,7 +36,7 @@ const UserProfile = () => {
     const fetchData = async ()=>{
 
 
-        const res = await fetch(server_url+"profile", {
+        const res = await fetch(server_url+"/profile", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -49,7 +47,7 @@ const UserProfile = () => {
         setUser(ans.username);
         localStorage.setItem('user',JSON.stringify({username:ans.username,email:ans.email}))
 
-        const result = await fetch(server_url+"profile/orderhistory", {
+        const result = await fetch(server_url+"/profile/orderhistory", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -58,9 +56,10 @@ const UserProfile = () => {
         });
        
         const json = await result.json();
-        setOrderInfo(json);
+        console.log(json)
+        setOrderInfo(json.orders);
 
-        const Result = await fetch(server_url+"home", {
+        const Result = await fetch(server_url+"/home", {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -68,8 +67,9 @@ const UserProfile = () => {
             body: JSON.stringify({email:ans.email})
         });
         const Ans = await Result.json();
-        if(Ans.product_info.length>0){
-            const cartItemsJSON = JSON.stringify(Ans.product_info)
+        console.log(Ans);
+        if(Ans.cartOrders.length>0){
+            const cartItemsJSON = JSON.stringify(Ans.cartOrders)
             localStorage.setItem('cart',cartItemsJSON)
         }
        
@@ -83,12 +83,22 @@ const UserProfile = () => {
             <Link to="/"><h1 className='font-semibold text-xl text-gray-700 mb-2'>Dashboard</h1></Link>
             <button className='font-semibold text-xl text-gray-700 mb-2' onClick={()=>setShowDiv(!showDiv)}>Order History</button>
 
-            {
-              showDiv &&  orderInfo.map((s)=>(<OrderHistory pageData={s.products}
-                                    total={s.total}
-                                    orderId={s.orderId}
-                />))
-            }
+            {showDiv && (
+                <>
+                    {orderInfo.length > 0 ? (
+                        orderInfo.map((s) => (
+                            <OrderHistory
+                                key={s.orderId}
+                                pageData={s.products}
+                                total={s.total}
+                                orderId={s.orderId}
+                            />
+                        ))
+                    ) : (
+                        <p className="text-gray-500 mt-4">No orders placed yet.</p>
+                    )}
+                </>
+            )}
             <br/>
             <button className='font-semibold text-xl text-gray-700 mb-2' onClick={handlClick}>Log Out</button>
         </div>

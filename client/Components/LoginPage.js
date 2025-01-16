@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import UserProfile from './UserProfile';
-import { server_url } from './utils/constants';
 
 
 const LoginPage = () => {
@@ -9,7 +8,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  //const url="http://localhost:3000/api/login"
+  const server_url = process.env.REACT_APP_SERVER_URL;
 
   if(localStorage.getItem("token")){
     return (
@@ -25,7 +24,7 @@ const LoginPage = () => {
 
     try {
 
-      const res = await fetch(server_url+"login", {
+      const res = await fetch(server_url+"/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

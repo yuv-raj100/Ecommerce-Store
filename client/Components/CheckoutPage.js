@@ -1,15 +1,15 @@
-import React,{useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import over from "../Images/over.jpg"
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { clearItem } from './reducers/CartSlice'
-import { server_url } from './utils/constants';
 
 
 const CheckoutPage = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const cartItems = useSelector((store) => store.cart.items);
     console.log(cartItems);
 
@@ -17,12 +17,18 @@ const CheckoutPage = () => {
 
     const userInfo = JSON.parse(localStorage.getItem('user'))
 
+    useEffect(() => {
+      if (!userInfo) {
+        navigate("/"); // Redirect to home page or login page
+      }
+    }, [userInfo, navigate]);
+
     cartItems.map((s)=>{
         total+=(s.pageData.status?s.pageData.exclusive_price:s.pageData.original_price)*s.count;
         return s;
     })
 
-    //const url = "http://localhost:3000/api/checkout"
+    const server_url = process.env.REACT_APP_SERVER_URL;
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -35,7 +41,7 @@ const CheckoutPage = () => {
 
     const fetchData = async (data)=>{
 
-        const result = await fetch(server_url+"checkout", {
+        const result = await fetch(server_url+"/checkout", {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -80,7 +86,7 @@ const CheckoutPage = () => {
                 <img className='mb-10' src={over}/>
                 <div className='ml-6 mr-6 mb-2'>
                     <h1 className='mb-3 text-gray-400'>Account Detail</h1>
-                    <h1>{userInfo.email}</h1>
+                    <h1>{userInfo?.email}</h1>
                 </div>
                 <hr className='m-3'></hr>
                 <div className='ml-6 mr-6 mb-5'>

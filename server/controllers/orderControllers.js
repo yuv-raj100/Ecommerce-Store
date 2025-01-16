@@ -43,10 +43,10 @@ const getOrderInfo = async (req,res)=>{
     // console.log(req.body);
     // console.log(email);
     const orderInfo = await orderModel.findOne({useremail : useremail});
-    if(orderInfo===null)
-        res.status(201).json([]);
-    else
-        res.status(201).json(orderInfo.product_info);
+    const result ={
+        orders:orderInfo==null?[]:orderInfo,
+    }
+    res.status(201).json(result);
 }
 
 

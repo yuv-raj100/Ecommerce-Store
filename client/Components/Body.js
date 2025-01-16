@@ -2,7 +2,6 @@ import React,{useState,useEffect} from 'react'
 import CategoryWear from './CategoryWear'
 import Banner from './Banner'
 import { MoonLoader } from 'react-spinners';
-import { server_url } from './utils/constants';
 import ScrollToTop from './ScrollToTop';
 
 
@@ -18,11 +17,12 @@ const Body = () => {
         fetchData();
     },[])
 
-    // const url = "http://localhost:3000/api/home"
+    const server_url=process.env.REACT_APP_SERVER_URL
     const userInfo = JSON.parse(localStorage.getItem('user'))
 
+
     const fetchData = async ()=>{
-        const res = await fetch(server_url+"home");
+        const res = await fetch(server_url+"/home");
         const data = await res.json();
         const homePageArray = data.homePage;
         setBanner(homePageArray[0].categories);

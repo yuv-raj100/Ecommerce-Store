@@ -32,8 +32,10 @@ const getCartInfo = async (req,res)=>{
     // console.log(req.body);
     // console.log(email);
     const cartInfo = await cartModel.findOne({email : email});
-    
-    res.status(201).json(cartInfo);
+    const result = {
+      cartOrders: cartInfo == null ? [] : cartInfo,
+    };
+    res.status(201).json(result);
 }
 
 // addProduct();

@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { addItem } from './reducers/CartSlice'
 import ImageSlider from './ImageSlider';
 import { Minus,Plus } from 'lucide-react';
-import { server_url } from './utils/constants';
 import ScrollToTop from './ScrollToTop';
 
 
@@ -31,19 +30,20 @@ const ProductPage = () => {
     const [flag,setFlag] = useState(false)
     const [images,setImages] = useState([]);
     const [error,setError] = useState(null);
-    const [temp,setTemp] = useState(0);
 
     useEffect(()=>{
         fetchData();
     },[]);
 
-    const URL = server_url+"products/"+obj.category+"/"+obj.name;
-   
+    const server_url = process.env.REACT_APP_SERVER_URL;
+
+    const URL = server_url+"/products/"+obj.category+"/"+obj.name;
+    const sizes = ["S","M","L","XL","XLL"];
 
     const fetchData = async ()=>{
         const res = await fetch(URL);
         const data = await res.json();
-        setArr(data.quantity);
+        setArr(sizes);
         setImages(data.images);
         setPageData(data)
     }
@@ -88,8 +88,8 @@ const ProductPage = () => {
             <h1 className='font-semibold text-xl mb-2'>Size</h1>
             { arr.length>0 && 
                 arr.map((s,index)=>(<button  className={`m-2 py-2 font-medium border w-10 text-center border-gray-600 ${
-                    size === s.size ? 'bg-gray-500' : 'bg-white'
-                  }`} onClick={()=> handleSize(s.size)} key={index}>{s.size}</button>))
+                    size === s ? 'bg-gray-500' : 'bg-white'
+                  }`} onClick={()=> handleSize(s)} key={index}>{s}</button>))
             }
 
             {

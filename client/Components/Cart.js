@@ -2,7 +2,6 @@ import React ,{useEffect}from 'react'
 import { useSelector } from 'react-redux'
 import CartItem from './CartItem';
 import { Link } from 'react-router-dom';
-import { server_url } from './utils/constants';
 import ScrollToTop from './ScrollToTop';
 
 
@@ -23,9 +22,10 @@ const Cart = () => {
   const isLogin = localStorage.getItem("token")
 
   //const url = "http://localhost:3000/api/cart"
+  const server_url = process.env.REACT_APP_SERVER_URL;
 
   const fetchData = async (data)=>{
-    const result = await fetch(server_url+"cart", {
+    const result = await fetch(server_url+"/cart", {
 
         method: 'POST',
         headers: {

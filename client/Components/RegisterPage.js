@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { server_url } from './utils/constants';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 
 const RegisterPage = () => {
@@ -8,13 +8,13 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
   
 
-  // const url="http://localhost:3000/api/register"
+  const server_url = process.env.REACT_APP_SERVER_URL;
 
   const fetchData = async (data)=>{
-      const res = await fetch(server_url+"register", {
+      const res = await fetch(server_url+"/register", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -45,6 +45,7 @@ const RegisterPage = () => {
     setEmail('');
     setPassword('');
     setError('');
+    navigate('/login');
   };
 
   return (

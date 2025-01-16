@@ -26,11 +26,11 @@ const Products = () => {
 
     const server_url = process.env.REACT_APP_SERVER_URL;
 
-    const fetchData = async (sortStyle="default") => {
+    const fetchData = async (sortStyle) => {
 
       if(!hasMore)
         return ; 
-
+      
       setLoading(true);
       try {
         const params = new URLSearchParams({ page: pageNumber, limit: 6, sort:sortStyle });

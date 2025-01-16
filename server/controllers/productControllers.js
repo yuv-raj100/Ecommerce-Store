@@ -8,7 +8,7 @@ const sendProductsList = async (req, res) => {
   const productList = await productModel.find();
   let category = req.params.resId;
   let { page, limit, sort } = req.query;
-
+  sort = sort==undefined?"default":sort;
   console.log(sort);
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 6; // Default limit if not provided

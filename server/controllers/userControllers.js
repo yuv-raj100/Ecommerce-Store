@@ -3,53 +3,70 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 
-const register = async (req,res)=>{
-    const {username,email,password}=req.body; 
-    try {
-        const existingUser = await userModel.findOne({ email : email })
-        if(existingUser){
-            return res.status(400).json({message:"User already existed"})
-        }
-        
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const result = await userModel.create({
-            username : username,
-            email : email,
-            password : hashedPassword,
-        });
+const register = async (req, res) => {
+  const { username, email, password } = req.body;
 
-        const token = jwt.sign({email : result.email},process.env.SECRET_KEY)
-        res.status(201).json({user:result,token:token})
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({message: "Something went wrong"})
-        }
-}
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    // Check if user already exists
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const result = await userModel.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Generate JWT token
+    const token = jwt.sign({ email: result.email }, process.env.SECRET_KEY);
+    
+    res.status(201).json({ user: {username,email}, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
 
 
-const login = async (req,res)=>{
-    const {email,password}=req.body;
-    try {
-        const existingUser = await userModel.findOne({ email : email })
-        if(!existingUser){
-            return res.status(404).json({message:"User not found"})
-        }
 
-        const matchPassword = await bcrypt.compare(password,existingUser.password);
+const login = async (req, res) => {
+  const { email, password } = req.body;
 
-        if(!matchPassword){
-            res.status(400).json({message:"Invalid Credentials"});
-        }
+  try {
+    // Check if the user exists
+    const existingUser = await userModel.findOne({ email });
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-        const token = jwt.sign({email : existingUser.email},process.env.SECRET_KEY)
-        res.status(201).json({token : token })
+    // Verify the password
+    const matchPassword = await bcrypt.compare(password, existingUser.password);
+    if (!matchPassword) {
+      return res.status(401).json({ message: "Invalid Credentials" });
+    }
 
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({message: "Something went wrong"})
-        
-        }
-}
+    const username=existingUser.username
+    const token = jwt.sign({ email: existingUser.email}, process.env.SECRET_KEY);
+
+    // Return the token
+    return res.status(200).json({ token, user:{email,username} });
+
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).json({ message: "Something went wrong. Please try again later." });
+  }
+};
+
 
 const profile = async (req,res)=>{
     const {token}=req.body;

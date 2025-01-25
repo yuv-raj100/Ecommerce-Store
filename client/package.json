@@ -20,6 +20,7 @@
   "homepage": "https://github.com/yuv-raj100/Ecommerce-Store#readme",
   "devDependencies": {
     "autoprefixer": "^9.8.8",
+    "buffer": "^6.0.3",
     "parcel": "^2.10.3",
     "parcel-bundler": "^1.12.5",
     "postcss": "^8.2.1",
@@ -30,8 +31,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^2.0.1",
+    "axios": "^1.7.9",
+    "crypto-js": "^4.2.0",
     "lucide-react": "^0.295.0",
-    "reac": "^0.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",

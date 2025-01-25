@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Razorpay = require('razorpay');
 
 
 const quantitySchema = new mongoose.Schema({
@@ -90,6 +91,10 @@ const orderSchema = mongoose.Schema({
                 type : String,
                 required:true
             },
+            razorpayId:{
+              type : String,
+              required:true
+            }
         }
     ],
     

@@ -35,7 +35,7 @@ const Header = () => {
             <div>
                 <ul className='flex items-center'>
                     <li className='m-2 text-gray-600 font-bold'><Link to="/cart"><ShoppingCart /></Link></li>
-                    <li className='m-2 text-gray-600 font-bold'><Link to="/login"><User /></Link></li>
+                    <li className='m-2 text-gray-600 font-bold'><Link to="/profile"><User /></Link></li>
                 </ul>
             </div>
             

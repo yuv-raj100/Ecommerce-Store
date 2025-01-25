@@ -48,14 +48,12 @@ const sendProductsList = async (req, res) => {
 
 const sendProductInfo = async (req,res)=>{
     productList = await productModel.find();
-    console.log(productList);
     const prdtName = req.params.name;
     const prdtInfo = await productModel.findOne({ handle : prdtName });
     res.status(201).json(prdtInfo);
 }
 
 const homePage = async (req,res)=>{
-    console.log("hi");
     const data = await homeModel.find();
     const arr=data[0];
     res.status(201).json({homePage:data});

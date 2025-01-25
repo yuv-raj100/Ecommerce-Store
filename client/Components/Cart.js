@@ -12,7 +12,7 @@ const Cart = () => {
   ScrollToTop();
 
   const cartItems = useSelector((store) => store.cart.items);
-  console.log(cartItems);
+  // console.log(cartItems);
   
   const cartItemsJSON = JSON.stringify(cartItems)
   localStorage.setItem('cart', cartItemsJSON);
@@ -25,16 +25,21 @@ const Cart = () => {
   const server_url = process.env.REACT_APP_SERVER_URL;
 
   const fetchData = async (data)=>{
-    const result = await fetch(server_url+"/cart", {
 
-        method: 'POST',
+    try {
+      const result = await fetch(server_url + "/cart", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
-    const ans = await result.json();
-    console.log(ans);
+      const ans = await result.json();
+      console.log(ans);
+    } catch (error) {
+      console.log(error);
+    }
+    
 }
 
   useEffect(()=>{

@@ -1,7 +1,7 @@
 const {login,register,profile} = require("../controllers/userControllers")
 const {sendProductsList,sendProductInfo,homePage} = require("../controllers/productControllers")
 const {getCartInfo,setCartInfo} = require("../controllers/cartController")
-const {setOrderInfo,getOrderInfo} = require("../controllers/orderControllers")
+const {setOrderInfo,getOrderInfo, paymentVerification} = require("../controllers/orderControllers")
 
 const router = require('express').Router();
 
@@ -15,5 +15,7 @@ router.get("/products/:resId/:name",sendProductInfo)
 router.post("/home",getCartInfo);
 router.post("/cart",setCartInfo);
 router.post("/checkout",setOrderInfo)
+router.post("/payment",paymentVerification)
+
 
 module.exports = router;

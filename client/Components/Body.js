@@ -22,12 +22,16 @@ const Body = () => {
 
 
     const fetchData = async ()=>{
-        const res = await fetch(server_url+"/home");
-        const data = await res.json();
-        const homePageArray = data.homePage;
-        setBanner(homePageArray[0].categories);
-        setCarouselData(homePageArray[0].sliders);
-        setLoading(!loading);
+        try {
+            const res = await fetch(server_url + "/home");
+            const data = await res.json();
+            const homePageArray = data.homePage;
+            setBanner(homePageArray[0].categories);
+            setCarouselData(homePageArray[0].sliders);
+            setLoading(!loading);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 

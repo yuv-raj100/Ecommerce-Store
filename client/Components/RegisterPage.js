@@ -13,19 +13,32 @@ const RegisterPage = () => {
 
   const server_url = process.env.REACT_APP_SERVER_URL;
 
-  const fetchData = async (data)=>{
-      const res = await fetch(server_url+"/register", {
-        method: 'POST',
+  const fetchData = async (data) => {
+    try {
+      const res = await fetch(server_url + "/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
+
+      // Parse the response
       const ans = await res.json();
-      console.log(ans);
-      localStorage.setItem('token',ans.token);
-      
-  }
+
+      // Check for HTTP errors
+      if (!res.ok) {
+        throw new Error(ans.message || `HTTP error: ${res.status}`);
+      }
+
+      // Store token and user in localStorage
+      localStorage.setItem("token", ans.token);
+      localStorage.setItem("user", JSON.stringify(ans.user)); // Save user as a string
+      console.log("User registered successfully:", ans.user);
+    } catch (error) {
+      console.error("Registration failed:", error.message);
+    }
+  };
 
   const handleRegister = async () => {
     if (!name || !email || !password) {

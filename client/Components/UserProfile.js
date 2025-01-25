@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearItem } from './reducers/CartSlice';
 import { Link } from 'react-router-dom';
 
 
-
 import OrderHistory from './OrderHistory';
+import LoginPage from './LoginPage';
 
 const UserProfile = () => {
 
     const dispatch = useDispatch();
-
-
-    const [user,setUser] = useState("");
-    const [orderInfo,setOrderInfo] = useState([]);
     const navigate = useNavigate();
-
+    const userDetails = localStorage.getItem("user");
+    const [user,setUser] = useState(userDetails?.username);
+    const [orderInfo,setOrderInfo] = useState([]);
+  
     useEffect(()=>{
         fetchData();
     },[])
 
-
+    
 
     const server_url = process.env.REACT_APP_SERVER_URL;
 
@@ -33,47 +32,66 @@ const UserProfile = () => {
         navigate('/');
     }
 
-    const fetchData = async ()=>{
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
-
-        const res = await fetch(server_url+"/profile", {
-          method: 'POST',
+        // First request to fetch user profile
+        const profilePromise = fetch(server_url + "/profile", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({token:localStorage.getItem("token")})
-        });
-        const ans = await res.json();
-        setUser(ans.username);
-        localStorage.setItem('user',JSON.stringify({username:ans.username,email:ans.email}))
+          body: JSON.stringify({ token }),
+        }).then((res) => res.json());
 
-        const result = await fetch(server_url+"/profile/orderhistory", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({email:ans.email})
-        });
-       
-        const json = await result.json();
-        console.log(json)
-        setOrderInfo(json.orders);
+        // Wait for the profile data to resolve
+        const profileData = await profilePromise;
 
-        const Result = await fetch(server_url+"/home", {
-            method: 'POST',
+        // Store user data in localStorage
+        setUser(profileData.username);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            username: profileData.username,
+            email: profileData.email,
+          })
+        );
+
+        // Concurrently fetch order history and home data
+        const [orderHistory, homeData] = await Promise.all([
+          fetch(server_url + "/profile/orderhistory", {
+            method: "POST",
             headers: {
-            'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
-            body: JSON.stringify({email:ans.email})
-        });
-        const Ans = await Result.json();
-        console.log(Ans);
-        if(Ans.cartOrders.length>0){
-            const cartItemsJSON = JSON.stringify(Ans.cartOrders)
-            localStorage.setItem('cart',cartItemsJSON)
+            body: JSON.stringify({ email: profileData.email }),
+          }).then((res) => res.json()),
+
+          fetch(server_url + "/home", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: profileData.email }),
+          }).then((res) => res.json()),
+        ]);
+
+        // Process order history data
+        setOrderInfo(orderHistory.orders.product_info);
+
+        // Process home data and store cart items in localStorage
+        if (homeData.cartOrders.length > 0) {
+          const cartItemsJSON = JSON.stringify(homeData.cartOrders);
+          localStorage.setItem("cart", cartItemsJSON);
         }
-       
-    }
+
+        console.log(orderHistory);
+        console.log(homeData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
     const [showDiv,setShowDiv] = useState(false);
 

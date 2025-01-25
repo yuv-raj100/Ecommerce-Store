@@ -1,27 +1,16 @@
 import React, {useState,useEffect} from 'react'
 import over from "../Images/over.jpg"
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { clearItem } from './reducers/CartSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import RenderRazorpay from './RenderRazorpay'
 
 
 const CheckoutPage = () => {
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const cartItems = useSelector((store) => store.cart.items);
-    console.log(cartItems);
 
     let total=0;
 
     const userInfo = JSON.parse(localStorage.getItem('user'))
-
-    useEffect(() => {
-      if (!userInfo) {
-        navigate("/"); // Redirect to home page or login page
-      }
-    }, [userInfo, navigate]);
 
     cartItems.map((s)=>{
         total+=(s.pageData.status?s.pageData.exclusive_price:s.pageData.original_price)*s.count;
@@ -29,7 +18,7 @@ const CheckoutPage = () => {
     })
 
     const server_url = process.env.REACT_APP_SERVER_URL;
-
+    const [displayRazorpay, setDisplayRazorpay] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
@@ -38,7 +27,13 @@ const CheckoutPage = () => {
     const [error, setError] = useState('');
     const [screen,setScreen] = useState(false);
     const [orderId,setOrderId] = useState("");
-
+    const [orderDetails, setOrderDetails] = useState({
+      orderId: null,
+      currency: null,
+      amount: null,
+      customerOrderId: null,
+    });
+    
     const fetchData = async (data)=>{
 
         const result = await fetch(server_url+"/checkout", {
@@ -50,7 +45,15 @@ const CheckoutPage = () => {
         });
         const ans = await result.json();
         console.log(ans);
-        setOrderId(ans.orderId);
+        if(result.ok){
+            setOrderDetails({
+                orderId: ans.id,
+                currency: ans.currency,
+                amount: ans.amount,
+                customerOrderId: ans.orderId,
+            });
+        }
+        setDisplayRazorpay(true);
     }
 
 
@@ -61,9 +64,9 @@ const CheckoutPage = () => {
             return;
         }
         setError('');
-        setScreen(!screen);
-        localStorage.removeItem('cart');
-        dispatch(clearItem());
+        //setScreen(!screen);
+        //localStorage.removeItem('cart');
+        //dispatch(clearItem());
 
         const obj = {
             useremail:userInfo.email,
@@ -73,7 +76,9 @@ const CheckoutPage = () => {
             phone:phone,
             pincode:pincode,
             product_info:cartItems,
-            total:total
+            total:total,
+            keyId:process.env.REACT_APP_KEY_ID,
+            keySecret:process.env.REACT_APP_KEY_SECRET,
         };
 
         await fetchData(obj);
@@ -194,20 +199,18 @@ const CheckoutPage = () => {
                     </button>
                 </div>
             </div>}
-            {screen && 
-                <div className='text-center'>
-                
-                <h1 className='font-bold text-2xl m-4'>Order Successfull!!</h1>
-                <h1 className='font-bold text-2xl m-4'>Your OrderId: {orderId}</h1>
-                
-                <Link to="/"><h1>You will be redirected to HomePage...</h1></Link>
-                {
-                    setTimeout(() => {
-                        navigate('/');
-                    }, 3000)
-                }
-                
-                </div>}
+            {displayRazorpay && (
+                <RenderRazorpay
+                    amount={orderDetails.amount}
+                    currency={orderDetails.currency}
+                    orderId={orderDetails.orderId}
+                    keyId={process.env.REACT_APP_KEY_ID}
+                    keySecret={process.env.REACT_APP_KEY_SECRET}
+                    setScreen={setScreen}
+                    customerOrderId={orderDetails.customerOrderId}
+                    setDisplayRazorpay={setDisplayRazorpay}
+                />)
+            }
         </div>
     )
 }

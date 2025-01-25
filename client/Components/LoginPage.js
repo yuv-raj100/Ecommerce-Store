@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import UserProfile from './UserProfile';
+import axios from 'axios';
 
 
 const LoginPage = () => {
@@ -8,40 +9,36 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const navigate = useNavigate();
   const server_url = process.env.REACT_APP_SERVER_URL;
 
-  if(localStorage.getItem("token")){
-    return (
-        <UserProfile token={localStorage.getItem("token")}/>
-    )
-  }
+  // if(localStorage.getItem("token")){
+  //   return (
+  //       <UserProfile token={localStorage.getItem("token")}/>
+  //   )
+  // }
 
-  // useEffect(()=>{
-  //   handleLogin();
-  // },[])
+ 
 
-  const fetchData = async (data)=>{
+    const fetchData = async (data) => {
+      try {
+        const res = await axios.post(`${server_url}/login`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-    try {
-
-      const res = await fetch(server_url+"/login", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const ans = await res.json();
-      if(res.ok){
-        localStorage.setItem('token',ans.token);
+        // If successful, store the token
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate('/');
+      } catch (err) {
+        // Handle errors (both HTTP errors and network errors)
+          if (err) {
+            setError(err.response.data.message);
+          }
       }
-      
-    } catch (err) {
-        console.log(err);
-        setError(err.message);
-    }
-      
-  }
+    };
 
     const handleLogin = async () => {
    
@@ -58,7 +55,6 @@ const LoginPage = () => {
 
     setEmail('');
     setPassword('');
-    setError('');
   };
 
   

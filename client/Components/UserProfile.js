@@ -86,8 +86,8 @@ const UserProfile = () => {
           localStorage.setItem("cart", cartItemsJSON);
         }
 
-        console.log(orderHistory);
-        console.log(homeData);
+        // console.log(orderHistory);
+        // console.log(homeData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -96,7 +96,7 @@ const UserProfile = () => {
     const [showDiv,setShowDiv] = useState(false);
 
     return (
-        <div className='m-4 mb-80'>
+        <div className='m-4 mb-96'>
             <h1 className='font-bold text-3xl text-gray-700 mb-10'>Hi, {user}</h1>
             <Link to="/"><h1 className='font-semibold text-xl text-gray-700 mb-2'>Dashboard</h1></Link>
             <button className='font-semibold text-xl text-gray-700 mb-2' onClick={()=>setShowDiv(!showDiv)}>Order History</button>

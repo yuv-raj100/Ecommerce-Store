@@ -17,7 +17,11 @@ NEXGEN is a responsive e-commerce website built to deliver a seamless online sho
   - Utilized local storage to maintain the cart state across user sessions.
     
 **RESTful Backend API**
-  - Built RESTful APIs using Node.js for managing product data and handling backend operations.
+  - Ensured safe payment processing by verifying signatures using Razorpay's API, enhancing transaction reliability and security.
+
+**Razorpay Payment Gateway Integration**
+  - Pay securly
+    
     
 🚀 **Technologies Used**
 
@@ -27,7 +31,7 @@ NEXGEN is a responsive e-commerce website built to deliver a seamless online sho
   - Backend: Node.js
   - Database: MongoDB
     
-🌐 **Live Demo: ** https://ecommerce-store-client-six.vercel.app/
+🌐 **Live Demo: ** [https://nexgen-liard.vercel.app/]
 
 📷 **Screenshots**
 

@@ -1,6 +1,9 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "engines": {
+    "node": "24.x"
+  },
   "description": "backend for ecom store",
   "main": "server.js",
   "scripts": {

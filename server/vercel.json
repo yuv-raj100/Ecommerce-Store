@@ -1,9 +1,6 @@
 {
   "version": 2,
   "name": "native-server",
-  "engines": {
-    "node": "24.x"
-  },
   "builds": [
     {
       "src": "server.js",

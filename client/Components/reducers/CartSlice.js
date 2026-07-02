@@ -9,18 +9,17 @@ const findItemIndex2 = (items, newItem) => {
     return items.findIndex(item => item.pageData.id === newItem.pageData.id);
 };
 
-const loadItems = () => {
-    const storedItems = localStorage.getItem('cart');
-    return storedItems===null ? [] : JSON.parse(storedItems);
-  };
-  
-
 const CartSlice = createSlice({
     name:'cart',
     initialState:{
-        items:loadItems(),
+        items: [],
+        isLoaded: false,
     },
     reducers:{
+        setCart: (state, action) => {
+            state.items = action.payload;
+            state.isLoaded = true;
+        },
         addItem:(state,action)=>{
             
             const {pageData,count,size} = action.payload;
@@ -51,6 +50,6 @@ const CartSlice = createSlice({
     },
 })
 
-export const {addItem, removeItem, clearItem,updateItem} = CartSlice.actions;
+export const {setCart, addItem, removeItem, clearItem, updateItem} = CartSlice.actions;
 
 export default CartSlice.reducer

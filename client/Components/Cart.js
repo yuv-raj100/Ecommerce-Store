@@ -1,5 +1,6 @@
 import React ,{useEffect}from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setCart } from './reducers/CartSlice';
 import CartItem from './CartItem';
 import { Link } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
@@ -11,21 +12,13 @@ const Cart = () => {
 
   ScrollToTop();
 
+  const dispatch = useDispatch();
   const cartItems = useSelector((store) => store.cart.items);
-  // console.log(cartItems);
-  
-  const cartItemsJSON = JSON.stringify(cartItems)
-  localStorage.setItem('cart', cartItemsJSON);
-
-  const userInfo = JSON.parse(localStorage.getItem('user'))
-
-  const isLogin = localStorage.getItem("token")
-
-  //const url = "http://localhost:3000/api/cart"
+  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const isLogin = localStorage.getItem("token");
   const server_url = process.env.REACT_APP_SERVER_URL;
 
-  const fetchData = async (data)=>{
-
+  const syncCart = async (data)=>{
     try {
       const result = await fetch(server_url + "/cart", {
         method: "POST",
@@ -35,18 +28,39 @@ const Cart = () => {
         body: JSON.stringify(data),
       });
       const ans = await result.json();
-      console.log(ans);
     } catch (error) {
       console.log(error);
     }
-    
-}
+  }
+
+  const fetchCartData = async () => {
+    if (!userInfo) return;
+    try {
+      const result = await fetch(server_url + "/cart/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userInfo.email }),
+      });
+      const ans = await result.json();
+      if (ans.cartOrders && ans.cartOrders.product_info) {
+        dispatch(setCart(ans.cartOrders.product_info));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCartData();
+  }, []);
 
   useEffect(()=>{
-    if(cartItems.length>0 && localStorage.getItem('user'))
-      fetchData({email:userInfo.email,
-                  cartDetails:cartItems});
-  },cartItems);
+    if(userInfo && cartItems.length >= 0) { // Sync even if empty to clear cart
+      syncCart({ email: userInfo.email, cartDetails: cartItems });
+    }
+  }, [cartItems]);
   
   if(cartItems.length==0){
     return(

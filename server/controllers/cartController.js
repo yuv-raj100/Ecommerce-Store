@@ -13,16 +13,17 @@ const setCartInfo = async (req,res)=>{
         productInfo.push(obj);
         return s;
     })
-    const existingUser = await cartModel.findOne({email:email});
-    if(existingUser){
-        existingUser.product_info=productInfo;
-        const flag = await existingUser.save();
-    }
-    else{
-        const result = await cartModel.create({
-            email:email,
-            product_info:productInfo
-        })
+    const updatedUser = await cartModel.findOneAndUpdate(
+        { email: email },
+        { $set: { product_info: productInfo } },
+        { new: true }
+    );
+
+    if (!updatedUser) {
+        await cartModel.create({
+            email: email,
+            product_info: productInfo
+        });
     }
     res.status(201).json({});
 }

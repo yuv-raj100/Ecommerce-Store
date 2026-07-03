@@ -4,6 +4,9 @@ NEXGEN is a responsive e-commerce website built to deliver a seamless online sho
 
 🌟 Features
 
+**AI Shopping Agent (New!)**
+  - Integrated an intelligent AI assistant that helps users find clothing options instantly. Simply tell the agent what you are looking for (e.g., "I want cargos"), and it will dynamically fetch and display a list of available options.
+
 **Mobile-Responsive Design**
   - Developed a clean, responsive UI using ReactJS and TailwindCSS, ensuring smooth functionality across all devices.
 
